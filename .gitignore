@@ -1,0 +1,81 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+out/
+build/
+*.o
+*.a
+*.so
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Unreal Engine
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.VC.db
+*.opensdf
+*.opendb
+*.sdf
+*.suo
+*.xcworkspace/
+*.xcodeproj/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+
+# Foundry / Hardhat
+cache/
+artifacts/
+typechain-types/
+out/
+
+# Go
+*.exe
+*.test
+*.prof
+coverage.txt
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker
+.docker/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Misc
+*.bak
+*.tmp

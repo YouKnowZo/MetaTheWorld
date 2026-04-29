@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package bridge;
+
+option go_package = "github.com/YouKnowZo/Meta_The_World/services/bridge/proto";
+
+import "google/protobuf/timestamp.proto";
+
+service BridgeService {
+  // Bidirectional stream for high-frequency entity updates
+  rpc StreamEntityUpdates(stream EntityState) returns (stream EntityBatch);
+  
+  // Subscribe to world events in specific spatial zones
+  rpc SubscribeEvents(SubscribeRequest) returns (stream WorldEvent);
+}
+
+message Vector3 {
+  double x = 1;
+  double y = 2;
+  double z = 3;
+}
+
+message Rotation {
+  float yaw = 1;
+  float pitch = 2;
+  float roll = 3;
+}
+
+message EntityState {
+  string entity_id = 1;
+  string entity_type = 2;
+  string owner_address = 3;
+  Vector3 position = 4; // WGS-84 (Lat/Lon/Alt)
+  Rotation rotation = 5;
+  Vector3 velocity = 6;
+  google.protobuf.Timestamp timestamp = 7;
+}
+
+message EntityBatch {
+  repeated EntityState entities = 1;
+}
+
+message SubscribeRequest {
+  repeated string zone_ids = 1;
+}
+
+message WorldEvent {
+  string event_id = 1;
+  string event_type = 2;
+  string zone_id = 3;
+  bytes payload = 4;
+  google.protobuf.Timestamp timestamp = 5;
+}
+
+message GamblingResult {
+  string request_id = 1;
+  string player = 2;
+  bool won = 3;
+  uint64 payout = 4;
+  string game_type = 5;
+}
+
+message AgentInteraction {
+  string agent_id = 1;
+  string player_id = 2;
+  string message = 3;
+  string response = 4;
+}
+
+message PhygitalTrigger {
+  string trigger_id = 1;
+  string source = 2;
+  string type = 3;
+  Vector3 location = 4;
+  map<string, string> metadata = 5;
+  google.protobuf.Timestamp timestamp = 6;
+}
