@@ -1,4 +1,5 @@
 'use client';
+import React, { useState, useEffect } from 'react';
 import { fetchVehicles, buyVehicle, Vehicle } from '@/lib/api-client';
 import { X, Loader2 } from 'lucide-react';
 import Image from 'next/image';

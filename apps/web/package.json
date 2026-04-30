@@ -14,10 +14,13 @@
     "@radix-ui/react-progress": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.0",
     "@rainbow-me/rainbowkit": "^2.2.10",
+    "@tanstack/query-core": "^5.100.6",
     "@tanstack/react-query": "^5.66.9",
+    "@types/next": "^8.0.7",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.18.2",
+    "gaussian-splat-renderer-for-lam": "^0.0.9-alpha.2",
     "lucide-react": "^0.475.0",
     "mapbox-gl": "^3.10.0",
     "next": "16.2.4",
@@ -31,6 +34,9 @@
     "wagmi": "^2.14.11"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.24.8",
+    "@babel/preset-typescript": "^7.24.7",
+    "@babel/runtime": "^7.24.8",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "@testing-library/user-event": "^14.5.2",
@@ -39,6 +45,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "babel-jest": "^29.7.0",
     "eslint": "^10.2.1",
     "eslint-config-next": "16.2.4",
     "jest": "^29.7.0",
@@ -46,10 +53,6 @@
     "postcss": "^8",
     "tailwindcss": "^3.3.0",
     "ts-jest": "^29.2.0",
-    "typescript": "^5",
-    "babel-jest": "^29.7.0",
-    "@babel/preset-env": "^7.24.8",
-    "@babel/preset-typescript": "^7.24.7",
-    "@babel/runtime": "^7.24.8"
+    "typescript": "^5"
   }
 }

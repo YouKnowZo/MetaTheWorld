@@ -24,6 +24,17 @@ export function MapViewer() {
   const [geolocationError, setGeolocationError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (userLocation) {
+      setViewState(prev => ({
+        ...prev,
+        longitude: userLocation.longitude,
+        latitude: userLocation.latitude,
+        zoom: 14 // Zoom in a bit when user location is found
+      }));
+    }
+  }, [userLocation]);
+
+  useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
