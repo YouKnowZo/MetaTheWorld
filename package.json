@@ -4,7 +4,7 @@
   "description": "Meta The World - AR/VR Metaverse with NFT Land Ownership",
   "main": "index.js",
   "scripts": {
-  "bootstrap": "npm install",
+    "bootstrap": "npm install",
     "build": "lerna run build",
     "dev": "lerna run dev --parallel",
     "start": "npm run dev",
@@ -18,15 +18,22 @@
   "engines": {
     "node": ">=18 <20"
   },
-  "keywords": ["ar", "vr", "metaverse", "nft", "blockchain", "react", "react-native"],
+  "keywords": [
+    "ar",
+    "vr",
+    "metaverse",
+    "nft",
+    "blockchain",
+    "react",
+    "react-native"
+  ],
   "author": "YouKnowZo",
   "license": "MIT",
   "type": "commonjs",
-
   "devDependencies": {
-    "lerna": "^8.2.3",
-    "typescript": "^5.8.3",
     "@types/node": "^22.0.0",
-    "concurrently": "^8.2.1"
+    "concurrently": "^8.2.1",
+    "lerna": "^9.0.7",
+    "typescript": "^5.8.3"
   }
 }

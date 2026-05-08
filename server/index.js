@@ -26,12 +26,12 @@ const auth = (req, res, next) => {
     res.status(403).json({ error: 'invalid token' })
   }
 }
-
 app.post('/auth/exchange', async (req, res) => {
   try {
     const { address, message, signature } = req.body
     if (!address || !message || !signature) return res.status(400).json({ error: 'missing' })
 
+    // verify signature
     let signer
     try {
       signer = ethers.verifyMessage(message, signature)

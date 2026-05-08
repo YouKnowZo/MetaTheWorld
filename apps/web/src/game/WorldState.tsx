@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 
 type WorldContextType = {
   timeOfDay: number
@@ -22,3 +22,5 @@ export const useWorld = () => {
   if (!ctx) throw new Error('useWorld must be used within WorldProvider')
   return ctx
 }
+
+export default WorldProvider

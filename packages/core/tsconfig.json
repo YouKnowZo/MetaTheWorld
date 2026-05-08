@@ -8,7 +8,8 @@
     "paths": {
       "@core/*": ["../core/src/*"],
       "@gps/*": ["../gps/src/*"]
-    }
+    },
+    "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*"]
 }

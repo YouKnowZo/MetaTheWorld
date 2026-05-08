@@ -38,8 +38,7 @@ import PremiumMetaverseLoader from './components/PremiumMetaverseLoader'
 import './App.css'
 import './components/ScrollingApp.css'
 import './components/ScrollProgress.css'
-import { WalletProvider, useWalletContext } from './contexts/WalletContext'
-import { ToastNotification } from './components/ToastNotification'
+import { useWallet } from './hooks/useWallet'
 
 // Ultra-Realistic Metaverse Lighting
 function Lighting() {
@@ -132,8 +131,12 @@ function MetaverseScene() {
           antialias: true, 
           powerPreference: "high-performance",
           alpha: false,
+<<<<<<< HEAD
           stencil: false,
           depth: true
+=======
+          preserveDrawingBuffer: false
+>>>>>>> 078f28a (fix: resolve TypeScript deprecations, update Tailwind v4 PostCSS config, fix dependencies)
         }}
       >
         <Suspense fallback={null}>
@@ -231,7 +234,27 @@ function MetaverseScene() {
 
 // Hero Section Content
 function HeroContent() {
+<<<<<<< HEAD
   const { address, balanceEth, isConnecting, connectWallet } = useWalletContext()
+=======
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [walletConnecting, setWalletConnecting] = useState(false)
+  const wallet = useWallet()
+
+  const connectWallet = async () => {
+    setWalletConnecting(true)
+    try {
+      const result = await wallet.connectAndSign()
+      if (result?.address) {
+        setCurrentUser({ address: result.address, balance: Math.floor(Math.random() * 10000) })
+      }
+    } catch (error) {
+      console.error('Failed to connect wallet:', error)
+    } finally {
+      setWalletConnecting(false)
+    }
+  }
+>>>>>>> 078f28a (fix: resolve TypeScript deprecations, update Tailwind v4 PostCSS config, fix dependencies)
 
   return (
     <div className="hero-content">
@@ -350,10 +373,15 @@ function App() {
   }
 
   return (
+<<<<<<< HEAD
     <WalletProvider>
       <WorldProvider>
         <PremiumMetaverseLoader />
         <div className="app-container">
+=======
+    <WorldProvider>
+      <div className="app-container">
+>>>>>>> 078f28a (fix: resolve TypeScript deprecations, update Tailwind v4 PostCSS config, fix dependencies)
       {/* Top Navigation */}
       <TopNav 
         currentSection={currentSection}
@@ -387,6 +415,7 @@ function App() {
           </p>
         </motion.div>
         <MetaverseScene />
+        {/* Example placeholder model loaded into the scene (no hidden DOM needed) */}
       </MetaverseSection>
 
       {/* Land NFTs Section */}
@@ -492,10 +521,15 @@ function App() {
 
       {/* Loading Screen */}
       <Suspense fallback={<Loader />} />
+<<<<<<< HEAD
         </div>
         <ToastNotification />
       </WorldProvider>
     </WalletProvider>
+=======
+      </div>
+    </WorldProvider>
+>>>>>>> 078f28a (fix: resolve TypeScript deprecations, update Tailwind v4 PostCSS config, fix dependencies)
   )
 }
 
