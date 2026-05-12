@@ -26,7 +26,7 @@ export function useGPSLocation() {
 
   if (typeof navigator !== 'undefined' && navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
-      (position) => {
+      (position: any) => {
         location = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -35,7 +35,7 @@ export function useGPSLocation() {
         };
         loading = false;
       },
-      (err) => {
+      (err: any) => {
         error = err.message;
         loading = false;
       }

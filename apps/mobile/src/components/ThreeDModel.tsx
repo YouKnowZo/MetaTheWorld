@@ -9,7 +9,7 @@ interface ThreeDModelProps {
 }
 
 export function ThreeDModel({ lat, lng }: ThreeDModelProps) {
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<number>();
 
   const onContextCreate = async (gl: any) => {
     const { drawingBufferWidth: width, drawingBufferHeight: height } = gl;

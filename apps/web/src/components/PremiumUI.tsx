@@ -51,7 +51,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
     return () => clearInterval(interval)
   }, [])
 
-  const ownedLands = lands.filter(land => land.ownerId === currentUser?.id)
+  const ownedLands = lands.filter(land => land.owner === currentUser?.address)
   const totalValue = ownedLands.reduce((sum, land) => sum + land.price, 0)
   const profitLoss = totalValue - ownedLands.reduce((sum, land) => sum + (land.purchasePrice || land.price), 0)
 
@@ -182,9 +182,9 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                   .map((land) => (
                   <motion.div
                     key={land.id}
-                    className={`land-card ${land.ownerId ? 'owned' : 'available'}`}
+                    className={`land-card ${land.owner ? 'owned' : 'available'}`}
                     whileHover={{ y: -5, boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}
-                    onClick={() => !land.ownerId && handlePurchase(land.id, land.price)}
+                    onClick={() => !land.owner && handlePurchase(land.id, land.price)}
                   >
                     <div className="card-header">
                       <div className="land-id">#{land.id}</div>
@@ -198,7 +198,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                     
                     <div className="land-preview">
                       <div className="land-visualization"></div>
-                      {land.ownerId && <div className="sold-overlay">SOLD</div>}
+                      {land.owner && <div className="sold-overlay">SOLD</div>}
                     </div>
                     
                     <div className="card-footer">
@@ -206,7 +206,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                         <span className="price">{land.price} ETH</span>
                         <span className="usd-price">${(land.price * cryptoData.ethPrice).toFixed(0)}</span>
                       </div>
-                      {!land.ownerId && (
+                      {!land.owner && (
                         <button className="buy-btn">
                           ⚡ BUY NOW
                         </button>
@@ -368,7 +368,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                   <div className="feature">💎 Investment Grade</div>
                 </div>
 
-                {!selectedLand.ownerId && currentUser && (
+                {!selectedLand.owner && currentUser && (
                   <motion.button
                     className="purchase-btn"
                     onClick={() => handlePurchase(selectedLand.id, selectedLand.price)}
@@ -383,9 +383,9 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                   </motion.button>
                 )}
 
-                {selectedLand.ownerId && (
+                {selectedLand.owner && (
                   <div className="owned-indicator">
-                    ✅ OWNED BY {selectedLand.ownerId === currentUser?.id ? 'YOU' : 'ANOTHER USER'}
+                    ✅ OWNED BY {selectedLand.owner === currentUser?.address ? 'YOU' : 'ANOTHER USER'}
                   </div>
                 )}
               </div>

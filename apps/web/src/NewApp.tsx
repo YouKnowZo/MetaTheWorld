@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from 'react'
+import { useEffect, Suspense, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { 
   OrbitControls, 
@@ -10,6 +10,7 @@ import {
 import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing'
 import { motion } from 'framer-motion'
 import { useGameStore } from './store'
+import type { User } from './store'
 import { LandPlot } from './components/LandPlot'
 import { Terrain } from './components/Terrain'
 import ModelLoader from './components/ModelLoader'
@@ -34,7 +35,7 @@ import { EarningHub } from './components/EarningHub'
 import { VirtualLife } from './components/VirtualLife'
 import { CustomizationHub } from './components/CustomizationHub'
 import { PremiumUI } from './components/PremiumUI'
-import PremiumMetaverseLoader from './components/PremiumMetaverseLoader'
+
 import './App.css'
 import './components/ScrollingApp.css'
 import './components/ScrollProgress.css'
@@ -131,12 +132,9 @@ function MetaverseScene() {
           antialias: true, 
           powerPreference: "high-performance",
           alpha: false,
-<<<<<<< HEAD
           stencil: false,
-          depth: true
-=======
+          depth: true,
           preserveDrawingBuffer: false
->>>>>>> 078f28a (fix: resolve TypeScript deprecations, update Tailwind v4 PostCSS config, fix dependencies)
         }}
       >
         <Suspense fallback={null}>
@@ -234,9 +232,6 @@ function MetaverseScene() {
 
 // Hero Section Content
 function HeroContent() {
-<<<<<<< HEAD
-  const { address, balanceEth, isConnecting, connectWallet } = useWalletContext()
-=======
   const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [walletConnecting, setWalletConnecting] = useState(false)
   const wallet = useWallet()
@@ -246,7 +241,13 @@ function HeroContent() {
     try {
       const result = await wallet.connectAndSign()
       if (result?.address) {
-        setCurrentUser({ address: result.address, balance: Math.floor(Math.random() * 10000) })
+        setCurrentUser({ 
+          address: result.address, 
+          balance: Math.floor(Math.random() * 10000),
+          ownedLands: [],
+          avatar: { position: [0,0,0], color: '#ffffff' },
+          achievements: []
+        })
       }
     } catch (error) {
       console.error('Failed to connect wallet:', error)
@@ -254,7 +255,6 @@ function HeroContent() {
       setWalletConnecting(false)
     }
   }
->>>>>>> 078f28a (fix: resolve TypeScript deprecations, update Tailwind v4 PostCSS config, fix dependencies)
 
   return (
     <div className="hero-content">
@@ -285,16 +285,16 @@ function HeroContent() {
           <button 
             className="btn-primary"
             onClick={connectWallet}
-            disabled={isConnecting}
+            disabled={walletConnecting}
           >
-            {isConnecting ? 'Connecting...' : 'Enter Metaverse'}
+            {walletConnecting ? 'Connecting...' : 'Enter Metaverse'}
           </button>
           <button className="btn-secondary" onClick={() => window.open('https://youtube.com', '_blank')}>
             Watch Demo
           </button>
         </motion.div>
 
-        {address && (
+        {currentUser && (
           <motion.div 
             className="user-status"
             initial={{ opacity: 0, scale: 0.8 }}
@@ -302,7 +302,7 @@ function HeroContent() {
             transition={{ duration: 0.5 }}
           >
             <span className="status-text">
-              Connected: {address.slice(0, 6)}...{address.slice(-4)} | {balanceEth} ETH
+              Connected: {currentUser.address.slice(0, 6)}...{currentUser.address.slice(-4)} | {currentUser.balance} MTW
             </span>
           </motion.div>
         )}
@@ -333,7 +333,7 @@ function HeroContent() {
 
 function App() {
   const { fetchLands, syncBackend } = useGameStore()
-  const { address } = useWalletContext()
+  const { address } = useWallet()
   
   const sections = [
     { id: 'hero', name: 'Home' },
@@ -373,15 +373,8 @@ function App() {
   }
 
   return (
-<<<<<<< HEAD
-    <WalletProvider>
-      <WorldProvider>
-        <PremiumMetaverseLoader />
-        <div className="app-container">
-=======
     <WorldProvider>
       <div className="app-container">
->>>>>>> 078f28a (fix: resolve TypeScript deprecations, update Tailwind v4 PostCSS config, fix dependencies)
       {/* Top Navigation */}
       <TopNav 
         currentSection={currentSection}
@@ -521,15 +514,8 @@ function App() {
 
       {/* Loading Screen */}
       <Suspense fallback={<Loader />} />
-<<<<<<< HEAD
-        </div>
-        <ToastNotification />
-      </WorldProvider>
-    </WalletProvider>
-=======
       </div>
     </WorldProvider>
->>>>>>> 078f28a (fix: resolve TypeScript deprecations, update Tailwind v4 PostCSS config, fix dependencies)
   )
 }
 

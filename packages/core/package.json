@@ -1,5 +1,5 @@
 {
-  "name": "core",
+  "name": "@meta-the-world/core",
   "version": "1.0.0",
   "description": "Shared TypeScript logic and types for META THE WORLD metaverse.",
   "main": "index.js",
