@@ -21,7 +21,7 @@ import { cn } from '@/lib/utils';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const navItems = [
-  { name: 'Map View', href: '/', icon: MapIcon },
+  { name: 'Map View', href: '/map', icon: MapIcon },
   { name: 'Inventory', href: '/inventory', icon: Box },
   { name: 'Diamond District', href: '/diamond-district', icon: LayoutDashboard },
   { name: 'Dealership', href: '/dealership', icon: ShoppingBag },
