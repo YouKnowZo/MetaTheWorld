@@ -101,7 +101,7 @@ function SettingToggle({ title, description, checked = false }: { title: string,
       <button
         onClick={() => setIsEnabled(!isEnabled)}
         aria-label={`Toggle ${title}`}
-        aria-pressed={isEnabled}
+        aria-pressed={isEnabled ? 'true' : 'false'}
         className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${isEnabled ? 'bg-blue-600' : 'bg-slate-800'}`}
       >
         <span

@@ -299,7 +299,7 @@ export default function AdSpacePage() {
                       <span className={`px-3 py-1 rounded-full text-[10px] font-black tracking-widest ${STATUS_COLORS[c.status]}`}>{c.status}</span>
                     </td>
                     <td className="px-8 py-6 text-right">
-                      <button className="text-slate-500 hover:text-white transition-colors">
+                      <button aria-label="View campaign details" className="text-slate-500 hover:text-white transition-colors">
                         <ChevronDown size={18} />
                       </button>
                     </td>
