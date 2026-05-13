@@ -76,8 +76,8 @@ export default function PartyRoomPage() {
                 key={fe.id}
                 initial={{ y: 0, opacity: 1, scale: 0.5 }}
                 animate={{ y: -400, opacity: 0, scale: 2 }}
-                className="absolute text-4xl"
-                style={{ left: `${fe.x}%`, bottom: '100px' }}
+                style={{ '--x': `${fe.x}%` } as React.CSSProperties}
+                className="absolute text-4xl left-[var(--x)] bottom-[100px]"
               >
                 {fe.emoji}
               </motion.div>
@@ -124,8 +124,8 @@ export default function PartyRoomPage() {
               className="flex flex-col items-center gap-3"
             >
               <div 
-                className="w-16 h-16 rounded-3xl flex items-center justify-center text-white font-black text-xl shadow-2xl relative group cursor-pointer"
-                style={{ backgroundColor: av.color }}
+                style={{ '--avatar-color': av.color } as React.CSSProperties}
+                className="w-16 h-16 rounded-3xl flex items-center justify-center text-white font-black text-xl shadow-2xl relative group cursor-pointer bg-[var(--avatar-color)]"
               >
                 {av.initials}
                 {av.isVip && <Crown className="absolute -top-3 -right-3 text-yellow-400 fill-yellow-400 drop-shadow-lg" size={18} />}
@@ -173,7 +173,12 @@ export default function PartyRoomPage() {
           {messages.map(msg => (
             <div key={msg.id} className="space-y-1">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-black uppercase tracking-widest" style={{ color: msg.color }}>{msg.username}</span>
+                <span 
+                  style={{ '--msg-color': msg.color } as React.CSSProperties}
+                  className="text-[10px] font-black uppercase tracking-widest text-[var(--msg-color)]"
+                >
+                  {msg.username}
+                </span>
                 <span className="text-[9px] text-slate-600 font-mono">{msg.time}</span>
               </div>
               <p className="text-sm text-slate-300 bg-white/5 p-3 rounded-2xl rounded-tl-none border border-white/5">{msg.message}</p>
