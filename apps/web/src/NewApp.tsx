@@ -177,7 +177,7 @@ function MetaverseScene() {
             <Suspense fallback={null}>
               <ModelLoader 
                 src="/models/astronaut.glb" 
-                scale={3} 
+                scale={1.2} 
                 position={[0, -1, 0]} 
                 rotation={[0, Math.PI, 0]}
               />
@@ -185,7 +185,7 @@ function MetaverseScene() {
           </PlayerController>
 
           {/* Land Plots with Glow */}
-          <group scale={2.5}>
+          <group scale={2.0}>
             {lands.map((land) => (
               <LandPlot key={land.id} land={land} />
             ))}
@@ -203,14 +203,13 @@ function MetaverseScene() {
 
           {/* Camera Controls */}
           <OrbitControls 
-            enablePan={true}
-            enableZoom={true}
+            enablePan={false}
+            enableZoom={false}
             enableRotate={true}
             minDistance={5}
-            // scale max distance relative to terrain so zoom feels natural
             maxDistance={terrainSize * 0.9}
             maxPolarAngle={Math.PI / 2}
-            autoRotate={false}
+            autoRotate={true}
             autoRotateSpeed={0.5}
             makeDefault
           />

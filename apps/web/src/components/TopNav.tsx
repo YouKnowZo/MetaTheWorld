@@ -32,10 +32,13 @@ export const TopNav: React.FC<TopNavProps> = ({ currentSection, onSectionChange 
   ]
 
   const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      onSectionChange?.(sectionId)
+    if (onSectionChange) {
+      onSectionChange(sectionId)
+    } else {
+      const element = document.getElementById(sectionId)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
     }
     setIsMobileMenuOpen(false)
   }
@@ -55,8 +58,6 @@ export const TopNav: React.FC<TopNavProps> = ({ currentSection, onSectionChange 
     <>
       <motion.nav 
         className={`top-nav ${isScrolled ? 'scrolled' : ''}`}
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <div className="nav-container">

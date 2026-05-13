@@ -4,8 +4,10 @@ const cors = require('cors')
 const jwt = require('jsonwebtoken')
 const { ethers } = require('ethers')
 const { PrismaClient } = require('@prisma/client')
+const { PrismaBetterSqlite3 } = require('@prisma/adapter-better-sqlite3')
 
-const prisma = new PrismaClient()
+const adapter = new PrismaBetterSqlite3({ url: 'file:./dev.db' })
+const prisma = new PrismaClient({ adapter })
 const app = express()
 const PORT = process.env.PORT || 4000
 

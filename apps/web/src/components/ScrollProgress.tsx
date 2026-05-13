@@ -27,11 +27,12 @@ export const ScrollProgress: React.FC<ScrollProgressProps> = ({ sections }) => {
             key={section.id}
             className={`scroll-dot ${currentSection === section.id ? 'active' : ''}`}
             onClick={() => scrollToSection(section.id)}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
             initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: index * 0.1 }}
+            animate={{ 
+              opacity: 1, 
+              x: 0
+            }}
+            transition={{ delay: index * 0.1, type: "spring", stiffness: 300 }}
           >
             <span className="dot-tooltip">{section.name}</span>
           </motion.button>

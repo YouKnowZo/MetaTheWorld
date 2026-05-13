@@ -1,37 +1,66 @@
 # Dependencies
 node_modules/
-yarn.lock
-package-lock.json
-pnpm-lock.yaml
+vendor/
 
 # Build outputs
 dist/
-build/
-.next/
 out/
-coverage/
+build/
+*.o
+*.a
+*.so
 
-# Environment variables
+# Environment files
 .env
 .env.local
 .env.*.local
 
-# IDE
+# Unreal Engine
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+*.VC.db
+*.opensdf
+*.opendb
+*.sdf
+*.suo
+*.xcworkspace/
+*.xcodeproj/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcuserstate
+
+# Foundry / Hardhat
+cache/
+artifacts/
+typechain-types/
+out/
+
+# Go
+*.exe
+*.test
+*.prof
+coverage.txt
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
-*.swn
-*.sublime-project
-*.sublime-workspace
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Testing
-.jest-cache/
-.nyc_output/
+*~
 
 # Logs
 *.log
@@ -39,23 +68,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Temp folders
-.agents/
-.aider-desk/
-.cortex/
-.factory/
-.qwen/
-.roo/
-.vibe/
-.windsurf/
+# Docker
+.docker/
 
-# Vercel
-.vercel/
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
 
-# Build artifacts
-artifacts/
-cache/
-
-# Development
-.parcel-cache/
-.pnpm-debug.log
+# Misc
+*.bak
+*.tmp

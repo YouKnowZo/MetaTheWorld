@@ -394,7 +394,7 @@ export const CustomizationHub: React.FC = () => {
                             <div className="perf-bar">
                               <div 
                                 className="perf-fill"
-                                style={{ width: `${vehicle.customization.performance.speed}%` }}
+                                ref={(el) => { if (el) el.style.width = `${vehicle.customization.performance.speed}%` }}
                               ></div>
                             </div>
                           </div>

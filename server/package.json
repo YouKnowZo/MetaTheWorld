@@ -8,7 +8,9 @@
     "dev": "nodemon index.js"
   },
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.8.0",
     "@prisma/client": "^7.7.0",
+    "better-sqlite3": "^12.10.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^17.4.1",

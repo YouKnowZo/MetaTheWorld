@@ -6,8 +6,8 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   background: rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid rgba(0, 255, 255, 0.1);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -38,7 +38,7 @@
   align-items: center;
   gap: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  /* Removed transition: all to fix Framer Motion scaling conflict */
   padding: 0.5rem;
   border-radius: 12px;
   position: relative;
@@ -116,7 +116,7 @@
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
   position: relative;
   overflow: hidden;
   text-decoration: none;
@@ -144,7 +144,6 @@
   box-shadow: 
     0 0 20px rgba(0, 255, 255, 0.3),
     inset 0 0 20px rgba(0, 255, 255, 0.05);
-  transform: translateY(-2px);
 }
 
 .nav-item.active {
@@ -186,7 +185,7 @@
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
   position: relative;
   overflow: hidden;
   box-shadow: 0 4px 15px rgba(255, 0, 128, 0.3);
@@ -208,7 +207,7 @@
 }
 
 .wallet-btn:hover {
-  transform: translateY(-2px);
+  /* Removed transform to fix Framer motion conflict */
   box-shadow: 0 6px 25px rgba(255, 0, 128, 0.4);
 }
 
@@ -286,6 +285,7 @@
   width: 320px;
   height: 100vh;
   background: rgba(0, 0, 0, 0.95);
+  -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border-left: 1px solid rgba(0, 255, 255, 0.2);
   z-index: 1001;
@@ -304,7 +304,7 @@
 
 .mobile-menu-content {
   padding: 2rem;
-  height: 100%;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
 }
@@ -364,7 +364,7 @@
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
   text-align: left;
 }
 
@@ -373,7 +373,6 @@
   background: rgba(0, 255, 255, 0.1);
   border-color: var(--neon-cyan);
   box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-  transform: translateX(10px);
 }
 
 .mobile-nav-icon {

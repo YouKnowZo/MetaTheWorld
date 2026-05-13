@@ -186,7 +186,7 @@ export const EarningHub: React.FC<EarningHubProps> = ({ isVisible }) => {
     const streakBonus = dailyStreak * 10;
     const baseReward = 50;
     const totalReward = baseReward + streakBonus;
-    
+
     setTotalEarnings(prev => prev + totalReward);
     setDailyStreak(prev => prev + 1);
     addNotification(`Claimed $${totalReward} daily reward! (Streak: ${dailyStreak}🔥)`, 'success');
@@ -256,8 +256,8 @@ export const EarningHub: React.FC<EarningHubProps> = ({ isVisible }) => {
               <div className="earning-icon">{opportunity.icon}</div>
               <div className="earning-title">{opportunity.title}</div>
               <div className="earning-amount">
-                {opportunity.period.includes('%') ? 
-                  `${opportunity.earning}${opportunity.period}` : 
+                {opportunity.period.includes('%') ?
+                  `${opportunity.earning}${opportunity.period}` :
                   `$${opportunity.earning}${opportunity.period}`
                 }
               </div>
@@ -274,8 +274,8 @@ export const EarningHub: React.FC<EarningHubProps> = ({ isVisible }) => {
         <div className="achievements-header">🏆 Achievements</div>
         <div className="achievements-list">
           {achievements.map(achievement => (
-            <div 
-              key={achievement.id} 
+            <div
+              key={achievement.id}
               className={`achievement-item ${achievement.completed ? 'completed' : ''}`}
             >
               <div className="achievement-icon">{achievement.icon}</div>
@@ -283,9 +283,9 @@ export const EarningHub: React.FC<EarningHubProps> = ({ isVisible }) => {
                 <div className="achievement-title">{achievement.title}</div>
                 <div className="achievement-description">{achievement.description}</div>
                 <div className="achievement-progress">
-                  <div 
+                  <div
                     className="progress-bar"
-                    style={{ width: `${(achievement.progress / achievement.target) * 100}%` }}
+                    ref={(el) => { if (el) el.style.width = `${(achievement.progress / achievement.target) * 100}%` }}
                   />
                   <div className="progress-text">
                     {achievement.progress}/{achievement.target}
@@ -310,8 +310,8 @@ export const EarningHub: React.FC<EarningHubProps> = ({ isVisible }) => {
             { name: 'You', earnings: Math.floor(totalEarnings) },
             { name: 'CasinoAce', earnings: 28443 }
           ].sort((a, b) => b.earnings - a.earnings).map((player, index) => (
-            <div 
-              key={player.name} 
+            <div
+              key={player.name}
               className={`leaderboard-item ${player.name === 'You' ? 'current-user' : ''}`}
             >
               <div className="rank">#{index + 1}</div>

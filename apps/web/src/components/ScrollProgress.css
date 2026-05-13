@@ -45,7 +45,7 @@
   background: rgba(255, 255, 255, 0.3);
   border: 2px solid rgba(0, 255, 255, 0.3);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Removed transition: all to fix Framer Motion scaling conflict */
   position: relative;
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
@@ -55,7 +55,6 @@
   background: rgba(0, 255, 255, 0.2);
   border-color: var(--neon-cyan);
   box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-  transform: scale(1.2);
 }
 
 .scroll-dot.active {
@@ -64,7 +63,6 @@
   box-shadow: 
     0 0 20px rgba(0, 255, 255, 0.6),
     0 0 40px rgba(0, 255, 255, 0.3);
-  transform: scale(1.3);
 }
 
 .scroll-dot.active::before {
@@ -201,9 +199,15 @@
 
 @media (max-width: 480px) {
   .scroll-dots {
-    display: none;
+    right: 0.2rem;
+    gap: 0.5rem;
   }
-  
+
+  .scroll-dot {
+    width: 6px;
+    height: 6px;
+  }
+
   .scroll-progress-bar {
     height: 3px;
   }

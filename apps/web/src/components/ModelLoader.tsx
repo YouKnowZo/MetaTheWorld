@@ -6,12 +6,14 @@ interface ModelLoaderProps {
   src?: string
   scale?: number
   className?: string
+  position?: [number, number, number]
+  rotation?: [number, number, number]
 }
 
 // Dynamic loader that imports GLTFLoader at runtime to avoid static build
 // dependency on three/examples types. Falls back to a placeholder while
 // loading or on error.
-export const ModelLoader: React.FC<ModelLoaderProps> = ({ src, scale = 1, className }) => {
+export const ModelLoader: React.FC<ModelLoaderProps> = ({ src, scale = 1, className, position, rotation }) => {
   const [scene, setScene] = useState<THREE.Object3D | null>(null)
   const [error, setError] = useState<Error | null>(null)
 
@@ -57,7 +59,13 @@ export const ModelLoader: React.FC<ModelLoaderProps> = ({ src, scale = 1, classN
   if (!scene) return <ModelPlaceholder size={1 * scale} color="#444" />
 
   return (
-    <primitive object={scene} scale={[scale, scale, scale]} className={className} />
+    <primitive 
+      object={scene} 
+      scale={[scale, scale, scale]} 
+      className={className} 
+      position={position}
+      rotation={rotation}
+    />
   )
 }
 
