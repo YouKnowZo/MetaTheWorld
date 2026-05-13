@@ -65,7 +65,7 @@ interface GameState {
   buyVehicle: (vehicle: any) => void
 }
 
-export const useGameStore = create<GameState>((set) => ({
+export const useGameStore = create<GameState>((set, get) => ({
   lands: [],
   users: [],
   currentUser: null,
@@ -74,9 +74,46 @@ export const useGameStore = create<GameState>((set) => ({
   worldSeed: Math.random(),
   notifications: [],
   syncBackend: async () => {},
-  fetchLands: async () => {},
-  saveAvatar: () => {},
-  buyVehicle: () => {},
+  fetchLands: async () => {
+    const state = get();
+    if (state.lands.length === 0) {
+      state.generateWorld();
+    }
+  },
+  saveAvatar: (avatar) => set((state) => {
+    if (!state.currentUser) return state;
+    return {
+      currentUser: {
+        ...state.currentUser,
+        avatar: { ...state.currentUser.avatar, ...avatar }
+      },
+      notifications: [
+        ...state.notifications,
+        { id: Date.now().toString(), message: 'Avatar saved successfully!', type: 'success', timestamp: Date.now() }
+      ]
+    };
+  }),
+  buyVehicle: (vehicle) => set((state) => {
+    if (!state.currentUser || state.currentUser.balance < vehicle.price) {
+      return {
+        ...state,
+        notifications: [
+          ...state.notifications,
+          { id: Date.now().toString(), message: 'Insufficient balance to buy vehicle', type: 'error', timestamp: Date.now() }
+        ]
+      };
+    }
+    return {
+      currentUser: {
+        ...state.currentUser,
+        balance: state.currentUser.balance - vehicle.price
+      },
+      notifications: [
+        ...state.notifications,
+        { id: Date.now().toString(), message: `${vehicle.brand} ${vehicle.model} purchased successfully!`, type: 'success', timestamp: Date.now() }
+      ]
+    };
+  }),
   
   setCurrentUser: (user) => set({ currentUser: user }),
   selectLand: (land) => set({ selectedLand: land }),

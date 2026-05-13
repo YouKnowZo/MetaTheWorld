@@ -1,4 +1,4 @@
-import { useEffect, Suspense, useState } from 'react'
+import { useEffect, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { 
   OrbitControls, 
@@ -10,7 +10,7 @@ import {
 import { EffectComposer, Bloom, ToneMapping } from '@react-three/postprocessing'
 import { motion } from 'framer-motion'
 import { useGameStore } from './store'
-import type { User } from './store'
+
 import { LandPlot } from './components/LandPlot'
 import { Terrain } from './components/Terrain'
 import ModelLoader from './components/ModelLoader'
@@ -35,11 +35,12 @@ import { EarningHub } from './components/EarningHub'
 import { VirtualLife } from './components/VirtualLife'
 import { CustomizationHub } from './components/CustomizationHub'
 import { PremiumUI } from './components/PremiumUI'
+import { ToastNotification } from './components/ToastNotification'
 
 import './App.css'
 import './components/ScrollingApp.css'
 import './components/ScrollProgress.css'
-import { useWallet } from './hooks/useWallet'
+import { useWalletContext } from './contexts/WalletContext'
 
 // Ultra-Realistic Metaverse Lighting
 function Lighting() {
@@ -171,6 +172,25 @@ function MetaverseScene() {
             speed={0.6}
           />
 
+          {/* Player/Avatar */}
+          <PlayerController position={[0, 2, 0]}>
+            <Suspense fallback={null}>
+              <ModelLoader 
+                src="/models/astronaut.glb" 
+                scale={3} 
+                position={[0, -1, 0]} 
+                rotation={[0, Math.PI, 0]}
+              />
+            </Suspense>
+          </PlayerController>
+
+          {/* Land Plots with Glow */}
+          <group scale={2.5}>
+            {lands.map((land) => (
+              <LandPlot key={land.id} land={land} />
+            ))}
+          </group>
+
           {/* Volumetric Atmospheric Fog */}
           <fog attach="fog" args={['#1a1a2e', 200, 1500]} />
 
@@ -180,15 +200,6 @@ function MetaverseScene() {
           {/* Cyber Grid Floor */}
           {/* Terrain scaled to the same size used to compute camera framing */}
           <Terrain size={terrainSize} segments={200} />
-
-          {/* Land Plots with Glow */}
-          {lands.map((land) => (
-            <LandPlot key={land.id} land={land} />
-          ))}
-
-          {/* Example model and player controller inside the scene */}
-          <ModelLoader src="/models/astronaut.glb" scale={0.6} />
-          <PlayerController />
 
           {/* Camera Controls */}
           <OrbitControls 
@@ -232,27 +243,17 @@ function MetaverseScene() {
 
 // Hero Section Content
 function HeroContent() {
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
-  const [walletConnecting, setWalletConnecting] = useState(false)
-  const wallet = useWallet()
+  const { currentUser, addNotification } = useGameStore()
+  const wallet = useWalletContext()
 
   const connectWallet = async () => {
-    setWalletConnecting(true)
     try {
-      const result = await wallet.connectAndSign()
-      if (result?.address) {
-        setCurrentUser({ 
-          address: result.address, 
-          balance: Math.floor(Math.random() * 10000),
-          ownedLands: [],
-          avatar: { position: [0,0,0], color: '#ffffff' },
-          achievements: []
-        })
-      }
+      await wallet.connectWallet()
+      // Note: connectWallet in WalletContext already syncs backend and creates user
+      addNotification('Wallet connected successfully!', 'success')
     } catch (error) {
       console.error('Failed to connect wallet:', error)
-    } finally {
-      setWalletConnecting(false)
+      addNotification('Failed to connect wallet', 'error')
     }
   }
 
@@ -285,9 +286,9 @@ function HeroContent() {
           <button 
             className="btn-primary"
             onClick={connectWallet}
-            disabled={walletConnecting}
+            disabled={wallet.isConnecting}
           >
-            {walletConnecting ? 'Connecting...' : 'Enter Metaverse'}
+            {wallet.isConnecting ? 'Connecting...' : 'Enter Metaverse'}
           </button>
           <button className="btn-secondary" onClick={() => window.open('https://youtube.com', '_blank')}>
             Watch Demo
@@ -333,7 +334,7 @@ function HeroContent() {
 
 function App() {
   const { fetchLands, syncBackend } = useGameStore()
-  const { address } = useWallet()
+  const { address } = useWalletContext()
   
   const sections = [
     { id: 'hero', name: 'Home' },
@@ -380,6 +381,9 @@ function App() {
         currentSection={currentSection}
         onSectionChange={scrollToSection}
       />
+      
+      {/* Global Notifications */}
+      <ToastNotification />
 
       {/* Scroll Progress Indicators */}
       <ScrollProgress sections={sections} />

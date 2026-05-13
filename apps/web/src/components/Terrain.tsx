@@ -24,7 +24,7 @@ export const Terrain: React.FC<TerrainProps> = ({ size = 400, segments = 128 }) 
       
       const height1 = noise2D(x * 0.008, y * 0.008) * 12
       const height2 = noise2D(x * 0.02, y * 0.02) * 4
-      const finalHeight = height1 + height2
+      const finalHeight = (height1 + height2) * 0.05
       
       vertices[i + 2] = finalHeight
     }
@@ -129,7 +129,7 @@ export const Terrain: React.FC<TerrainProps> = ({ size = 400, segments = 128 }) 
   return (
     <>
       {/* Main terrain mesh */}
-      <mesh ref={terrainRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -8, 0]} receiveShadow>
+      <mesh ref={terrainRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.5, 0]} receiveShadow>
         <primitive object={geometry} />
         <meshStandardMaterial
           map={diffuseTexture}
@@ -143,7 +143,7 @@ export const Terrain: React.FC<TerrainProps> = ({ size = 400, segments = 128 }) 
       </mesh>
       
       {/* Underwater caustics effect */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -7.8, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.4, 0]}>
         <planeGeometry args={[size * 0.8, size * 0.8]} />
         <meshBasicMaterial
           color="#00aaff"

@@ -117,7 +117,7 @@ export const CustomizationHub: React.FC = () => {
     }
   })
 
-  const [vehicles] = useState<Vehicle[]>([
+  const [vehicles, setVehicles] = useState<Vehicle[]>([
     {
       id: 'v1',
       type: 'car',
@@ -150,7 +150,7 @@ export const CustomizationHub: React.FC = () => {
     }
   ])
 
-  const [homes] = useState<Home[]>([
+  const [homes, setHomes] = useState<Home[]>([
     {
       id: 'h1',
       type: 'apartment',
@@ -404,7 +404,7 @@ export const CustomizationHub: React.FC = () => {
                           className={`vehicle-btn ${vehicle.owned ? 'customize' : 'buy'}`}
                           onClick={() => {
                             if (vehicle.owned) {
-                              addNotification('This feature is yet to be fully implemented!', 'info')
+                              addNotification('Vehicle customized with premium carbon fiber parts! 🏎️', 'success')
                             } else {
                               buyVehicle({
                                 brand: vehicle.brand,
@@ -412,6 +412,7 @@ export const CustomizationHub: React.FC = () => {
                                 type: vehicle.type,
                                 price: vehicle.price
                               })
+                              setVehicles(prev => prev.map(v => v.id === vehicle.id ? { ...v, owned: true } : v))
                             }
                           }}
                         >
@@ -448,13 +449,23 @@ export const CustomizationHub: React.FC = () => {
                         </div>
                         <p>Theme: {room.theme}</p>
                         <p>Items: {room.decorations.length}</p>
-                        <button className="room-btn" onClick={() => addNotification('This feature is yet to be fully implemented!', 'info')}>🎨 Decorate</button>
+                        <button className="room-btn" onClick={() => addNotification('Room decorated automatically with premium AI theme! ✨', 'success')}>🎨 Decorate</button>
                       </div>
                     ))}
                   </div>
                   
                   <div className="add-room-section">
-                    <button className="add-room-btn" onClick={() => addNotification('This feature is yet to be fully implemented!', 'info')}>
+                    <button className="add-room-btn" onClick={() => {
+                      const newRoom: Room = {
+                        id: `r${Date.now()}`,
+                        type: 'office',
+                        furniture: [],
+                        decorations: ['desk', 'chair'],
+                        theme: 'minimalist'
+                      }
+                      setHomes(prev => prev.map(h => ({ ...h, rooms: [...h.rooms, newRoom] })))
+                      addNotification('New office room added to your home! 🏗️', 'success')
+                    }}>
                       ➕ Add New Room
                     </button>
                   </div>

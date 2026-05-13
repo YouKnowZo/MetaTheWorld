@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Meta The World Web App",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 5177 --strictPort",
     "start": "npm run dev",
     "build": "tsc -b && vite build",
     "lint": "eslint .",

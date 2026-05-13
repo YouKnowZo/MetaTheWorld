@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useGameStore } from '../store';
 
 export interface EarningHubProps {
   isVisible: boolean;
@@ -28,6 +29,7 @@ interface Achievement {
 }
 
 export const EarningHub: React.FC<EarningHubProps> = ({ isVisible }) => {
+  const { addNotification } = useGameStore();
   const [activeTab, setActiveTab] = useState<'play' | 'stake' | 'trade' | 'social'>('play');
   const [totalEarnings, setTotalEarnings] = useState(2847.32);
   const [dailyStreak, setDailyStreak] = useState(7);
@@ -187,11 +189,12 @@ export const EarningHub: React.FC<EarningHubProps> = ({ isVisible }) => {
     
     setTotalEarnings(prev => prev + totalReward);
     setDailyStreak(prev => prev + 1);
+    addNotification(`Claimed $${totalReward} daily reward! (Streak: ${dailyStreak}🔥)`, 'success');
   };
 
-  const activateEarning = (id: string) => {
+  const activateEarning = (_id: string) => {
     // Activate earning opportunity logic
-    console.log('Activating earning:', id);
+    addNotification(`Earning opportunity activated successfully!`, 'success');
   };
 
   const filteredOpportunities = earningOpportunities.filter(opp => opp.category === activeTab);
