@@ -112,8 +112,8 @@ export const UI: React.FC = () => {
               <div className="property">
                 <span>Coordinates:</span> 
                 <span>
-                  {selectedLand.coordinates.lat.toFixed(4)}, 
-                  {selectedLand.coordinates.lng.toFixed(4)}
+                  {(selectedLand.coordinates?.lat || 0).toFixed(4)}, 
+                  {(selectedLand.coordinates?.lng || 0).toFixed(4)}
                 </span>
               </div>
             </div>

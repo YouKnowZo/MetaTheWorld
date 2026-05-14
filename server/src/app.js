@@ -4,17 +4,28 @@ const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const landRoutes = require('./routes/landRoutes');
 const nftRoutes = require('./routes/nftRoutes');
+const cryptoController = require('./controllers/cryptoController');
+const paymentController = require('./controllers/paymentController');
+const auth = require('./middleware/auth');
 
 const app = express();
 
 // Middleware
 app.use(cors());
+
+// Special case for Stripe Webhook (needs raw body)
+app.post('/api/payments/webhook', express.raw({ type: 'application/json' }), paymentController.handleWebhook);
+
 app.use(bodyParser.json());
 
 // Routes
 app.use('/auth', authRoutes);
 app.use('/api/lands', landRoutes);
 app.use('/api/nft', nftRoutes);
+app.get('/api/crypto/prices', cryptoController.getPrices);
+
+// Payment Routes
+app.post('/api/payments/create-session', auth, paymentController.createCheckoutSession);
 
 // Additional Mock API endpoints for a "real" feel without full DB schema changes yet
 app.get('/api/vip-rooms', (req, res) => res.json([

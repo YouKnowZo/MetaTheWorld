@@ -116,7 +116,7 @@ function StarRating({ value }: { value: number }) {
           className={n <= Math.round(value) ? 'text-yellow-400 fill-yellow-400' : 'text-slate-600'}
         />
       ))}
-      <span className="text-slate-400 text-xs ml-1">{value.toFixed(1)}</span>
+      <span className="text-slate-400 text-xs ml-1">{(value || 0).toFixed(1)}</span>
     </div>
   );
 }
@@ -211,7 +211,7 @@ export default function VIPRoomsPage() {
   const [earnings, setEarnings] = useState('');
 
   const estimatedEarnings = earnings
-    ? (parseFloat(earnings) * 0.85 * 0.7 * 30).toFixed(0)
+    ? (parseFloat(earnings || '0') * 0.85 * 0.7 * 30).toFixed(0)
     : '';
 
   return (

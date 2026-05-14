@@ -43,16 +43,18 @@ export function CryptoPriceTicker() {
 
   const fetchPrices = async () => {
     try {
-      const res = await fetch(
-        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,matic-network,tether&vs_currencies=usd&include_24hr_change=true',
-        { next: { revalidate: 0 } }
-      );
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+      const res = await fetch(`${API_URL}/crypto/prices`, { 
+        next: { revalidate: 0 },
+        cache: 'no-store'
+      });
       if (!res.ok) throw new Error('API error');
       const data: PriceData = await res.json();
       setPrices(data);
       lastKnownRef.current = data;
       setError(false);
-    } catch {
+    } catch (e) {
+      console.error('Ticker Fetch Error:', e);
       if (lastKnownRef.current) {
         setPrices(lastKnownRef.current);
       }
@@ -64,21 +66,21 @@ export function CryptoPriceTicker() {
 
   useEffect(() => {
     fetchPrices();
-    const interval = setInterval(fetchPrices, 30000);
+    const interval = setInterval(fetchPrices, 60000); // 1 min is enough with backend cache
     return () => clearInterval(interval);
   }, []);
 
   const formatPrice = (val?: number) => {
-    if (typeof val !== 'number') return '0.00';
-    if (val >= 1000) return val.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    if (val >= 1) return val.toFixed(4);
-    return val.toFixed(6);
+    const safeVal = typeof val === 'number' ? val : 0;
+    if (safeVal >= 1000) return safeVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (safeVal >= 1) return safeVal.toFixed(4);
+    return safeVal.toFixed(6);
   };
 
   const formatChange = (val?: number) => {
-    if (typeof val !== 'number') return '0.00%';
-    const sign = val >= 0 ? '+' : '';
-    return `${sign}${val.toFixed(2)}%`;
+    const safeVal = typeof val === 'number' ? val : 0;
+    const sign = safeVal >= 0 ? '+' : '';
+    return `${sign}${safeVal.toFixed(2)}%`;
   };
 
   return (

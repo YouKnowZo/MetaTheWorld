@@ -91,7 +91,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     try {
       const balanceWei = await prov.getBalance(addr);
       const formattedBalance = formatEther(balanceWei);
-      setBalanceEth(parseFloat(formattedBalance).toFixed(4));
+      setBalanceEth(parseFloat(formattedBalance || '0').toFixed(4));
       setBalanceUsd(parseFloat(formattedBalance) * ETH_USD_RATE);
     } catch (error) {
       console.error("Failed to fetch balance:", error);

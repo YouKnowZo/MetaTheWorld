@@ -26,6 +26,28 @@ const COLORS = ['#6366f1', '#8b5cf6', '#ec4899', '#f43f5e', '#f97316', '#eab308'
 const NAMES = ['CryptoKing', 'NeonRider', 'MetaWolf', 'DiamondHands', 'MoonShot', 'NFTQueen', 'Web3Wizard'];
 const EMOJIS = ['🕺', '💃', '🎉', '🔥', '💎', '🚀', '👑', '🎵'];
 
+const COLOR_MAP: Record<string, string> = {
+  '#6366f1': 'bg-indigo-500',
+  '#8b5cf6': 'bg-violet-500',
+  '#ec4899': 'bg-pink-500',
+  '#f43f5e': 'bg-rose-500',
+  '#f97316': 'bg-orange-500',
+  '#eab308': 'bg-amber-500',
+  '#22c55e': 'bg-green-500',
+  '#06b6d4': 'bg-cyan-500',
+};
+
+const TEXT_COLOR_MAP: Record<string, string> = {
+  '#6366f1': 'text-indigo-400',
+  '#8b5cf6': 'text-violet-400',
+  '#ec4899': 'text-pink-400',
+  '#f43f5e': 'text-rose-400',
+  '#f97316': 'text-orange-400',
+  '#eab308': 'text-amber-400',
+  '#22c55e': 'text-green-400',
+  '#06b6d4': 'text-cyan-400',
+};
+
 const MOCK_MESSAGES: ChatMessage[] = [
   { id: 'm1', username: 'CryptoKing', message: 'LFG this track is 🔥🔥🔥', time: '12:08', color: '#6366f1' },
   { id: 'm2', username: 'NFTQueen', message: 'Just sold my Paris District for 5 ETH!', time: '12:08', color: '#ec4899' },
@@ -124,8 +146,7 @@ export default function PartyRoomPage() {
               className="flex flex-col items-center gap-3"
             >
               <div 
-                style={{ '--avatar-color': av.color } as React.CSSProperties}
-                className="w-16 h-16 rounded-3xl flex items-center justify-center text-white font-black text-xl shadow-2xl relative group cursor-pointer bg-[var(--avatar-color)]"
+                className={`w-16 h-16 rounded-3xl flex items-center justify-center text-white font-black text-xl shadow-2xl relative group cursor-pointer ${COLOR_MAP[av.color] || 'bg-slate-700'}`}
               >
                 {av.initials}
                 {av.isVip && <Crown className="absolute -top-3 -right-3 text-yellow-400 fill-yellow-400 drop-shadow-lg" size={18} />}
@@ -174,8 +195,7 @@ export default function PartyRoomPage() {
             <div key={msg.id} className="space-y-1">
               <div className="flex items-center justify-between">
                 <span 
-                  style={{ '--msg-color': msg.color } as React.CSSProperties}
-                  className="text-[10px] font-black uppercase tracking-widest text-[var(--msg-color)]"
+                  className={`text-[10px] font-black uppercase tracking-widest ${TEXT_COLOR_MAP[msg.color] || 'text-slate-400'}`}
                 >
                   {msg.username}
                 </span>

@@ -66,6 +66,9 @@ interface GameState {
   playCasino: (game: string, betAmount: number) => Promise<any>
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3002/api';
+const AUTH_URL = API_URL.replace('/api', '/auth');
+
 export const useGameStore = create<GameState>((set, get) => ({
   lands: [],
   users: [],
@@ -101,7 +104,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       return;
     }
     try {
-      const res = await fetch('http://localhost:4000/api/lands/buy', {
+      const res = await fetch(`${API_URL}/lands/buy`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +133,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       return;
     }
     try {
-      const res = await fetch('http://localhost:4000/api/buildings/build', {
+      const res = await fetch(`${API_URL}/buildings/build`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -157,7 +160,7 @@ export const useGameStore = create<GameState>((set, get) => ({
     if (!token) return
 
     try {
-      const res = await fetch('http://localhost:4000/api/users/me', {
+      const res = await fetch(`${AUTH_URL}/me`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       if (res.ok) {
@@ -171,7 +174,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   fetchLands: async () => {
     try {
-      const res = await fetch('http://localhost:4000/api/lands')
+      const res = await fetch(`${API_URL}/lands`)
       if (res.ok) {
         const lands = await res.json()
         set({ lands: lands.map((l: any) => ({ ...l, id: l.landId, ownerId: l.ownerId })) })
@@ -188,7 +191,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       return;
     }
     try {
-      const res = await fetch('http://localhost:4000/api/avatar/save', {
+      const res = await fetch(`${API_URL}/avatar/save`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(avatarData)
@@ -212,7 +215,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       return;
     }
     try {
-      const res = await fetch('http://localhost:4000/api/vehicles/buy', {
+      const res = await fetch(`${API_URL}/vehicles/buy`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(vehicleData)
@@ -236,7 +239,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       return null;
     }
     try {
-      const res = await fetch('http://localhost:4000/api/casino/play', {
+      const res = await fetch(`${API_URL}/casino/play`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ game, betAmount })

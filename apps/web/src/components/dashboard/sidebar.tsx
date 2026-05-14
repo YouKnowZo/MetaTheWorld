@@ -19,6 +19,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { DepositModal } from './DepositModal';
+import { useGameStore } from '@/store';
 
 const navItems = [
   { name: 'Map View', href: '/map', icon: MapIcon },
@@ -36,6 +38,7 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const { currentUser } = useGameStore();
 
   return (
     <div className="flex flex-col w-64 bg-slate-900 text-white h-screen border-r border-slate-800 overflow-y-auto">
@@ -67,15 +70,22 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* MTW Balance */}
-      <div className="mx-4 mb-3 px-3 py-2 bg-slate-800 rounded-lg border border-yellow-500/20 shrink-0">
-        <div className="flex items-center space-x-2">
-          <Coins size={16} className="text-yellow-400" />
-          <div>
-            <p className="text-yellow-400 font-bold text-sm">1,250 MTW</p>
-            <p className="text-slate-500 text-[10px]">≈ $105.88 USD</p>
+      {/* MTW Balance & Deposit */}
+      <div className="mx-4 mb-3 space-y-2 shrink-0">
+        <div className="px-3 py-2 bg-slate-800 rounded-lg border border-yellow-500/20">
+          <div className="flex items-center space-x-2">
+            <Coins size={16} className="text-yellow-400" />
+            <div>
+              <p className="text-yellow-400 font-bold text-sm">
+                {(currentUser?.balance || 0).toLocaleString()} MTW
+              </p>
+              <p className="text-slate-500 text-[10px]">
+                ≈ ${( (currentUser?.balance || 0) * 0.01 ).toFixed(2)} USD
+              </p>
+            </div>
           </div>
         </div>
+        <DepositModal />
       </div>
 
       <div className="p-4 border-t border-slate-800 shrink-0">

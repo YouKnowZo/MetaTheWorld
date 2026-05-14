@@ -4,6 +4,8 @@ import "./globals.css";
 import { Web3Provider } from "@/components/providers/web3-provider";
 import { CryptoPriceTicker } from "@/components/dashboard/crypto-ticker";
 
+import { Navbar } from "@/components/navigation/navbar";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,7 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Web3Provider>
-          <CryptoPriceTicker />
+          <header className="sticky top-0 z-[100]">
+            <CryptoPriceTicker />
+            <Navbar />
+          </header>
           {children}
         </Web3Provider>
       </body>

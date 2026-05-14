@@ -6,7 +6,13 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
+import { useSocket } from '@/hooks/useSocket';
+import { useGameStore } from '@/store';
+
 export function MapViewer() {
+  const socket = useSocket();
+  const { lands, selectLand, selectedLand } = useGameStore();
+  
   const [viewState, setViewState] = useState({
     longitude: 2.3522,
     latitude: 48.8566,
@@ -40,16 +46,26 @@ export function MapViewer() {
           type="geojson"
           data={{
             type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                properties: { id: 'p1', tier: 'DISTRICT', owner: '0x123...' },
-                geometry: {
-                  type: 'Polygon',
-                  coordinates: [[[2.35, 48.85], [2.36, 48.85], [2.36, 48.86], [2.35, 48.86], [2.35, 48.85]]]
-                }
+            features: lands.map(land => ({
+              type: 'Feature',
+              properties: { 
+                id: land.id, 
+                landId: land.landId,
+                type: land.type, 
+                owner: land.ownerId,
+                price: land.price 
+              },
+              geometry: {
+                type: 'Polygon',
+                coordinates: [[
+                  [land.lng - 0.0005, land.lat - 0.0005],
+                  [land.lng + 0.0005, land.lat - 0.0005],
+                  [land.lng + 0.0005, land.lat + 0.0005],
+                  [land.lng - 0.0005, land.lat + 0.0005],
+                  [land.lng - 0.0005, land.lat - 0.0005]
+                ]]
               }
-            ]
+            }))
           }}
         >
           <Layer

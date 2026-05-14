@@ -12,20 +12,26 @@ import {
   ledgerWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { polygon, polygonAmoy } from 'wagmi/chains';
-import { WagmiProvider } from 'wagmi';
+import { WagmiProvider, createConfig, http } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@rainbow-me/rainbowkit/styles.css';
 
+const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '7545ec91984dbc6c2bb097c02e4a8efe';
+
 const { wallets } = getDefaultWallets({
   appName: 'Meta The World',
-  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || 'YOUR_PROJECT_ID',
+  projectId,
 });
 
 const config = getDefaultConfig({
   appName: 'Meta The World',
-  projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || 'YOUR_PROJECT_ID',
+  projectId,
   chains: [polygon, polygonAmoy],
   ssr: true,
+  transports: {
+    [polygon.id]: http(),
+    [polygonAmoy.id]: http(),
+  },
   wallets: [
     ...wallets,
     {
@@ -35,13 +41,29 @@ const config = getDefaultConfig({
   ],
 });
 
-const queryClient = new QueryClient();
+// Create a single instance of QueryClient
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+    },
+  },
+});
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
+  const [mounted, setMounted] = React.useState(false);
+  
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider>
+        <RainbowKitProvider modalSize="compact">
           {children}
         </RainbowKitProvider>
       </QueryClientProvider>
