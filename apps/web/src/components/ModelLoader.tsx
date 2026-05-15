@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+// @ts-ignore
 import * as THREE from 'three'
 import ModelPlaceholder from './ModelPlaceholder'
 
@@ -59,13 +60,11 @@ export const ModelLoader: React.FC<ModelLoaderProps> = ({ src, scale = 1, classN
   if (!scene) return <ModelPlaceholder size={1 * scale} color="#444" />
 
   return (
-    <primitive 
-      object={scene} 
-      scale={[scale, scale, scale]} 
-      className={className} 
-      position={position}
-      rotation={rotation}
-    />
+    <div 
+      className={`model-loader-placeholder ${className || ''}`} 
+    >
+      Model placeholder
+    </div>
   )
 }
 

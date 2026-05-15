@@ -23,7 +23,7 @@ export const UI: React.FC = () => {
     }
   }
 
-  const ownedLands = lands.filter(land => land.owner === currentUser?.address)
+  const ownedLands = lands.filter(land => land.ownerId === currentUser?.address || land.ownerId === currentUser?.id)
   const totalValue = ownedLands.reduce((sum, land) => sum + land.price, 0)
 
   return (
@@ -107,7 +107,7 @@ export const UI: React.FC = () => {
               </div>
               <div className="property">
                 <span>Owner:</span> 
-                <span>{selectedLand.owner || 'Available'}</span>
+                <span>{selectedLand.ownerId || 'Available'}</span>
               </div>
               <div className="property">
                 <span>Coordinates:</span> 
@@ -118,7 +118,7 @@ export const UI: React.FC = () => {
               </div>
             </div>
 
-            {!selectedLand.owner && currentUser && (
+            {!selectedLand.ownerId && currentUser && (
               <div className="panel-actions">
                 <button
                   className="purchase-btn"
@@ -133,7 +133,7 @@ export const UI: React.FC = () => {
               </div>
             )}
 
-            {selectedLand.owner === currentUser?.address && (
+            {selectedLand.ownerId === currentUser?.address && (
               <div className="panel-actions">
                 <button className="build-btn">🏗️ Build</button>
                 <button className="sell-btn">💰 Sell</button>
@@ -152,7 +152,7 @@ export const UI: React.FC = () => {
             <div
               key={land.id}
               className={`map-cell ${land.type} ${
-                land.owner ? 'owned' : 'available'
+                land.ownerId ? 'owned' : 'available'
               } ${selectedLand?.id === land.id ? 'selected' : ''}`}
               onClick={() => useGameStore.getState().selectLand(land)}
             />

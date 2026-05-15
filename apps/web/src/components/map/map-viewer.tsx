@@ -50,7 +50,7 @@ export function MapViewer() {
               type: 'Feature',
               properties: { 
                 id: land.id, 
-                landId: land.landId,
+                landId: land.id,
                 type: land.type, 
                 owner: land.ownerId,
                 price: land.price 
@@ -58,11 +58,11 @@ export function MapViewer() {
               geometry: {
                 type: 'Polygon',
                 coordinates: [[
-                  [land.lng - 0.0005, land.lat - 0.0005],
-                  [land.lng + 0.0005, land.lat - 0.0005],
-                  [land.lng + 0.0005, land.lat + 0.0005],
-                  [land.lng - 0.0005, land.lat + 0.0005],
-                  [land.lng - 0.0005, land.lat - 0.0005]
+                  [land.coordinates.lng - 0.0005, land.coordinates.lat - 0.0005],
+                  [land.coordinates.lng + 0.0005, land.coordinates.lat - 0.0005],
+                  [land.coordinates.lng + 0.0005, land.coordinates.lat + 0.0005],
+                  [land.coordinates.lng - 0.0005, land.coordinates.lat + 0.0005],
+                  [land.coordinates.lng - 0.0005, land.coordinates.lat - 0.0005]
                 ]]
               }
             }))
@@ -92,7 +92,7 @@ export function MapViewer() {
             style={{ left: hoverInfo.x, top: hoverInfo.y }}
           >
             <div>Parcel ID: {hoverInfo.feature.properties.id}</div>
-            <div>Tier: {hoverInfo.feature.properties.tier}</div>
+            <div>Type: {hoverInfo.feature.properties.type}</div>
           </div>
         )}
       </Map>

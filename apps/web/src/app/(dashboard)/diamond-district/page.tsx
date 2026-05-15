@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { placeBet } from '@/lib/api-client';
 import { motion } from 'framer-motion';
-import { Coins, Dices, TrendingUp, RefreshCw } from 'lucide-react';
+import { Coins, Dices, TrendingUp, RefreshCw, Trophy } from 'lucide-react';
 
 export default function DiamondDistrictPage() {
   const [amount, setAmount] = useState('10');

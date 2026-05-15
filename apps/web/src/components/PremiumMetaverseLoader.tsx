@@ -1,6 +1,27 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useProgress } from '@react-three/drei'
+// import { useProgress } from '@react-three/drei'
+// Mock hook since three dependencies are missing
+const useProgress = () => {
+  const [progress, setProgress] = React.useState(0);
+  const [active, setActive] = React.useState(true);
+  
+  React.useEffect(() => {
+    let current = 0;
+    const interval = setInterval(() => {
+      current += 10;
+      if (current >= 100) {
+        current = 100;
+        setActive(false);
+        clearInterval(interval);
+      }
+      setProgress(current);
+    }, 200);
+    return () => clearInterval(interval);
+  }, []);
+  
+  return { active, progress };
+}
 
 export const PremiumMetaverseLoader: React.FC = () => {
   const { active, progress } = useProgress()

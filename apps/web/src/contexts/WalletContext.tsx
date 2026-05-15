@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { ReactNode } from 'react';
 import { BrowserProvider, formatEther, parseEther } from 'ethers';
 import { useGameStore } from '../store';
+import { getWalletClient } from '@/utils/walletClient';
 
 interface Transaction {
   id: string;
@@ -29,6 +30,8 @@ const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
 const ETH_USD_RATE = 3300; // Static generic rate for simplicity
 
+const formatNumber = (num: number, dec: number) => num.toFixed(dec);
+
 export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [address, setAddress] = useState<string | null>(null);
   const [balanceEth, setBalanceEth] = useState<string>('0');
@@ -43,7 +46,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const init = async () => {
       const eth = (window as any).ethereum;
       if (eth) {
-        const newProvider = new BrowserProvider(eth);
+        const newProvider = getWalletClient();
         setProvider(newProvider);
         
         try {
@@ -91,7 +94,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     try {
       const balanceWei = await prov.getBalance(addr);
       const formattedBalance = formatEther(balanceWei);
-      setBalanceEth(parseFloat(formattedBalance || '0').toFixed(4));
+      setBalanceEth(formatNumber(parseFloat(formattedBalance || '0'), 4));
       setBalanceUsd(parseFloat(formattedBalance) * ETH_USD_RATE);
     } catch (error) {
       console.error("Failed to fetch balance:", error);
@@ -106,7 +109,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         throw new Error("MetaMask or Web3 provider not found. Please install a wallet.");
       }
       
-      const newProvider = new BrowserProvider(eth);
+      const newProvider = getWalletClient();
       setProvider(newProvider);
 
       const accounts = await newProvider.send('eth_requestAccounts', []);
@@ -213,7 +216,7 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   );
 };
 
-// eslint-disable-next-line react-refresh/only-export-components
+// Export hook without eslint disable
 export const useWalletContext = () => {
   const context = useContext(WalletContext);
   if (context === undefined) {

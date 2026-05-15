@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 import { ExternalLink, Info } from 'lucide-react';
 
 interface AssetCardProps {
@@ -19,11 +20,12 @@ export function AssetCard({ asset }: AssetCardProps) {
   return (
     <div className="group bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-blue-500/50 transition-all hover:shadow-2xl hover:shadow-blue-500/10">
       <div className="relative aspect-square overflow-hidden">
-        <img 
-          src={asset.image} 
-          alt={asset.name}
-          className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
-        />
+              <Image
+                src={asset.image}
+                alt={asset.name}
+                fill
+                className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+              />
         <div className="absolute top-2 left-2">
           <span className={cn(
             "px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider",

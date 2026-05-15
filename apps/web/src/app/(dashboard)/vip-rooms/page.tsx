@@ -140,7 +140,7 @@ function EntryModal({ room, onClose }: { room: VIPRoom; onClose: () => void }) {
             <Crown size={20} className="text-yellow-400" />
             <h2 className="text-xl font-bold text-white">Enter VIP Room</h2>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
+          <button onClick={onClose} aria-label="Close modal" className="text-slate-400 hover:text-white transition-colors">
             <X size={20} />
           </button>
         </div>

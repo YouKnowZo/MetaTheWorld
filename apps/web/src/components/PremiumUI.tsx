@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { formatNumber } from '@/utils/format';
 import { useGameStore } from '../store'
 
 interface CryptoData {
@@ -51,7 +53,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
     return () => clearInterval(interval)
   }, [])
 
-  const ownedLands = lands.filter(land => land.owner === currentUser?.address)
+  const ownedLands = lands.filter(land => land.ownerId === currentUser?.address)
   const totalValue = ownedLands.reduce((sum, land) => sum + land.price, 0)
   const profitLoss = totalValue - ownedLands.reduce((sum, land) => sum + (land.purchasePrice || land.price), 0)
 
@@ -85,7 +87,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
             exit={{ x: 400, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
-            🔥 Someone just bought Land #{recentSales[0]?.id} for {recentSales[0]?.price?.toFixed(2) || '0.00'} ETH!
+            🔥 Someone just bought Land #{recentSales[0]?.id} for {formatNumber(recentSales[0]?.price, 2) || '0.00'} ETH!
           </motion.div>
         )}
       </AnimatePresence>
@@ -103,7 +105,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
         <div className="crypto-ticker">
           <div className="ticker-item">
             <span className="ticker-label">ETH</span>
-            <span className="ticker-value">${cryptoData.ethPrice?.toFixed(2) || '0.00'}</span>
+            <span className="ticker-value">${formatNumber(cryptoData.ethPrice, 2) || '0.00'}</span>
             <span className="ticker-change positive">+2.4%</span>
           </div>
           <div className="ticker-item">
@@ -122,7 +124,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
             </div>
             <div className="user-info">
               <div className="user-address">{currentUser.address}</div>
-              <div className="user-balance">{(currentUser.balance || 0).toFixed(4)} ETH</div>
+              <div className="user-balance">{formatNumber(currentUser.balance, 4)} ETH</div>
             </div>
           </div>
         )}
@@ -182,9 +184,9 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                   .map((land) => (
                   <motion.div
                     key={land.id}
-                    className={`land-card ${land.owner ? 'owned' : 'available'}`}
+                    className={`land-card ${land.ownerId ? 'owned' : 'available'}`}
                     whileHover={{ y: -5, boxShadow: "0 20px 40px rgba(0,0,0,0.3)" }}
-                    onClick={() => !land.owner && handlePurchase(land.id, land.price)}
+                    onClick={() => !land.ownerId && handlePurchase(land.id, land.price)}
                   >
                     <div className="card-header">
                       <div className="land-id">#{land.id}</div>
@@ -196,30 +198,34 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                       </div>
                     </div>
                     
-                    <div className="land-preview relative overflow-hidden h-48 bg-slate-800">
-                      <img 
+                    <div className="land-preview">
+                      <Image
                         src={
-                          land.type === 'residential' ? '/assets/nfts/paris_residential.png' :
-                          land.type === 'beach' ? '/assets/nfts/beach_villa.png' :
-                          land.type === 'commercial' ? '/assets/nfts/cyberpunk_hub.png' :
-                          `https://api.dicebear.com/7.x/identicon/svg?seed=${land.id}`
-                        } 
+                          land.type === 'residential'
+                            ? '/assets/nfts/paris_residential.png'
+                            : land.type === 'beach'
+                            ? '/assets/nfts/beach_villa.png'
+                            : land.type === 'commercial'
+                            ? '/assets/nfts/cyberpunk_hub.png'
+                            : `https://api.dicebear.com/7.x/identicon/svg?seed=${land.id}`
+                        }
                         alt={`Land ${land.id}`}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        fill
+                        className="land-img"
                       />
-                      {land.owner && (
-                        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
-                          <span className="text-white font-black text-2xl tracking-tighter border-4 border-white px-4 py-1 rotate-[-12deg]">SOLD</span>
+                      {land.ownerId && (
+                        <div className="sold-overlay">
+                          <span className="sold-text">SOLD</span>
                         </div>
                       )}
                     </div>
                     
                     <div className="card-footer">
                       <div className="price-section">
-                        <span className="price">{(land.price || 0).toFixed(2)} ETH</span>
-                        <span className="usd-price">${((land.price || 0) * (cryptoData.ethPrice || 0)).toFixed(0)}</span>
+                        <span className="price">{formatNumber(land.price, 2)} ETH</span>
+                        <span className="usd-price">${formatNumber((land.price || 0) * (cryptoData.ethPrice || 0), 0)}</span>
                       </div>
-                      {!land.owner && (
+                      {!land.ownerId && (
                         <button className="buy-btn">
                           ⚡ BUY NOW
                         </button>
@@ -244,7 +250,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                         <span className="land-id">Land #{sale.id}</span>
                         <span className="buyer">{sale.buyer}</span>
                       </div>
-                      <div className="sale-price">{(sale.price || 0).toFixed(2)} ETH</div>
+                      <div className="sale-price">{formatNumber(sale.price, 2)} ETH</div>
                     </motion.div>
                   ))}
                 </div>
@@ -269,7 +275,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                 <div className="stat-card">
                   <div className="stat-icon">💰</div>
                   <div className="stat-content">
-                    <div className="stat-value">{totalValue?.toFixed(2) || '0.00'} ETH</div>
+                    <div className="stat-value">{formatNumber(totalValue, 2) || '0.00'} ETH</div>
                     <div className="stat-label">Total Value</div>
                   </div>
                 </div>
@@ -277,7 +283,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                   <div className="stat-icon">📈</div>
                   <div className="stat-content">
                     <div className={`stat-value ${profitLoss >= 0 ? 'positive' : 'negative'}`}>
-                      {profitLoss >= 0 ? '+' : ''}{profitLoss?.toFixed(2) || '0.00'} ETH
+                      {profitLoss >= 0 ? '+' : ''}{formatNumber(profitLoss, 2) || '0.00'} ETH
                     </div>
                     <div className="stat-label">P&L</div>
                   </div>
@@ -337,7 +343,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                     </div>
                     <div className="user-stats">
                       <div className="stat">{user.lands} lands</div>
-                      <div className="stat">{user.value?.toFixed(1) || '0.0'} ETH</div>
+                      <div className="stat">{formatNumber(user.value, 1) || '0.0'} ETH</div>
                     </div>
                   </motion.div>
                 ))}
@@ -358,23 +364,27 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           >
             <div className="land-showcase">
-              <div className="land-3d-preview relative overflow-hidden group">
-                <img 
-                  src={
-                    selectedLand.type === 'residential' ? '/assets/nfts/paris_residential.png' :
-                    selectedLand.type === 'beach' ? '/assets/nfts/beach_villa.png' :
-                    selectedLand.type === 'commercial' ? '/assets/nfts/cyberpunk_hub.png' :
-                    `https://api.dicebear.com/7.x/identicon/svg?seed=${selectedLand.id}`
-                  } 
-                  alt={`Preview ${selectedLand.id}`}
-                  className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <div className="land-3d-preview">
+              <Image
+                src={
+                  selectedLand.type === 'residential'
+                    ? '/assets/nfts/paris_residential.png'
+                    : selectedLand.type === 'beach'
+                    ? '/assets/nfts/beach_villa.png'
+                    : selectedLand.type === 'commercial'
+                    ? '/assets/nfts/cyberpunk_hub.png'
+                    : `https://api.dicebear.com/7.x/identicon/svg?seed=${selectedLand.id}`
+                }
+                alt={`Preview ${selectedLand.id}`}
+                fill
+                className="preview-img"
+              />
+                <div className="preview-gradient"></div>
               </div>
               
               <div className="land-info">
                 <h3>Land #{selectedLand.id}</h3>
-                <div className="land-rarity" style={{ '--rarity-color': getRarityColor(selectedLand.type) } as React.CSSProperties}>
+                <div className="land-rarity" style={{ borderLeftColor: getRarityColor(selectedLand.type) }}>
                   ✨ {selectedLand.type.toUpperCase()} RARITY
                 </div>
                 
@@ -389,7 +399,7 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                   <div className="feature">💎 Investment Grade</div>
                 </div>
 
-                {!selectedLand.owner && currentUser && (
+                {!selectedLand.ownerId && currentUser && (
                   <motion.button
                     className="purchase-btn"
                     onClick={() => handlePurchase(selectedLand.id, selectedLand.price)}
@@ -404,9 +414,9 @@ export const PremiumUI: React.FC<PremiumUIProps> = ({ cryptoData }) => {
                   </motion.button>
                 )}
 
-                {selectedLand.owner && (
+                {selectedLand.ownerId && (
                   <div className="owned-indicator">
-                    ✅ OWNED BY {selectedLand.owner === currentUser?.address ? 'YOU' : 'ANOTHER USER'}
+                    ✅ OWNED BY {selectedLand.ownerId === currentUser?.address ? 'YOU' : 'ANOTHER USER'}
                   </div>
                 )}
               </div>

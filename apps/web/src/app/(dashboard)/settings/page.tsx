@@ -47,7 +47,12 @@ export default function SettingsPage() {
               <label className="block text-slate-400 text-xs font-bold uppercase tracking-widest">Graphics Quality</label>
               <div className="flex gap-2">
                 {['Low', 'Medium', 'High', 'Ultra'].map(level => (
-                  <button key={level} aria-label={`Set graphics to ${level}`} className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest border transition-all ${level === 'High' ? 'bg-blue-600 border-blue-500 text-white shadow-lg' : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-white'}`}>
+                  <button 
+                    key={level} 
+                    aria-label={`Set graphics to ${level}`}
+                    aria-pressed="false"
+                    className={`flex-1 py-3 rounded-xl text-xs font-black uppercase tracking-widest border transition-all ${level === 'High' ? 'bg-blue-600 border-blue-500 text-white shadow-lg' : 'bg-slate-900 border-slate-800 text-slate-500 hover:text-white'}`}
+                  >
                     {level}
                   </button>
                 ))}
@@ -101,7 +106,7 @@ function SettingToggle({ title, description, checked = false }: { title: string,
       <button
         onClick={() => setIsEnabled(!isEnabled)}
         aria-label={`Toggle ${title}`}
-        aria-pressed={isEnabled}
+        aria-pressed={isEnabled ? 'true' : 'false'}
         className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${isEnabled ? 'bg-blue-600' : 'bg-slate-800'}`}
       >
         <span

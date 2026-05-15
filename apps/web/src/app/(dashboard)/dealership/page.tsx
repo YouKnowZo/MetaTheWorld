@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchVehicles, buyVehicle } from '@/lib/api-client';
 import { motion } from 'framer-motion';
 import { Car, ShoppingCart, ShieldCheck, Gauge } from 'lucide-react';
+import Image from 'next/image';
 
 export default function DealershipPage() {
   const [vehicles, setVehicles] = useState<any[]>([]);
@@ -48,10 +49,11 @@ export default function DealershipPage() {
               className="glass rounded-3xl overflow-hidden border border-slate-800 flex flex-col group"
             >
               <div className="relative h-56 overflow-hidden">
-                <img 
+                <Image 
                   src="/cyber-car.png" 
                   alt={v.name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  fill
+                  className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute top-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-md rounded-full border border-white/10 text-xs font-bold text-cyan-400">
                   NEW ARRIVAL

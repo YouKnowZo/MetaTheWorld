@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import { formatNumber } from '@/utils/format';
 
 interface CoinPrice {
   usd: number;
@@ -23,7 +24,7 @@ const COIN_LABELS: Record<string, string> = {
 
 function SkeletonTicker() {
   return (
-    <div className="flex items-center space-x-8 px-4">
+    <div className="flex items-center space-x-8 px-4 h-full">
       {[...Array(4)].map((_, i) => (
         <div key={i} className="flex items-center space-x-2 animate-pulse">
           <div className="h-3 w-10 bg-slate-700 rounded" />
@@ -66,42 +67,35 @@ export function CryptoPriceTicker() {
 
   useEffect(() => {
     fetchPrices();
-    const interval = setInterval(fetchPrices, 60000); // 1 min is enough with backend cache
+    const interval = setInterval(fetchPrices, 60000);
     return () => clearInterval(interval);
   }, []);
 
   const formatPrice = (val?: number) => {
     const safeVal = typeof val === 'number' ? val : 0;
     if (safeVal >= 1000) return safeVal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    if (safeVal >= 1) return safeVal.toFixed(4);
-    return safeVal.toFixed(6);
+    return formatNumber(safeVal, 4);
   };
 
   const formatChange = (val?: number) => {
     const safeVal = typeof val === 'number' ? val : 0;
     const sign = safeVal >= 0 ? '+' : '';
-    return `${sign}${safeVal.toFixed(2)}%`;
+    return `${sign}${formatNumber(safeVal, 2)}%`;
   };
 
   return (
-    <div className="w-full bg-slate-950 border-b border-slate-800 overflow-hidden" style={{ height: '32px' }}>
+    <div className="w-full h-8 bg-slate-950 border-b border-slate-800 overflow-hidden">
       <div className="flex items-center h-full px-3 space-x-6">
         <div className="flex items-center space-x-1 shrink-0">
-          <span
-            className="inline-block w-2 h-2 rounded-full bg-green-400"
-            style={{ animation: 'blink 1.2s ease-in-out infinite' }}
-          />
+          <span className="inline-block w-2 h-2 rounded-full bg-green-400 animate-ticker-blink" />
           <span className="text-green-400 text-[10px] font-bold tracking-widest uppercase">LIVE</span>
         </div>
 
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden h-full">
           {loading && !prices ? (
             <SkeletonTicker />
           ) : (
-            <div
-              className="flex items-center space-x-8"
-              style={{ animation: 'ticker-scroll 40s linear infinite', whiteSpace: 'nowrap' }}
-            >
+            <div className="flex items-center h-full space-x-8 animate-ticker-scroll whitespace-nowrap">
               {prices &&
                 (Object.keys(COIN_LABELS) as Array<keyof typeof COIN_LABELS>).map((coin) => {
                   const data = prices[coin as keyof PriceData];
@@ -155,6 +149,12 @@ export function CryptoPriceTicker() {
       </div>
 
       <style jsx>{`
+        .animate-ticker-blink {
+          animation: blink 1.2s ease-in-out infinite;
+        }
+        .animate-ticker-scroll {
+          animation: ticker-scroll 40s linear infinite;
+        }
         @keyframes blink {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.2; }

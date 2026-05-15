@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 export interface VirtualLifeProps {
@@ -191,7 +191,7 @@ export const VirtualLife: React.FC<VirtualLifeProps> = ({ isVisible }) => {
     setActiveCareer(career);
   };
 
-  const levelUp = () => {
+  const levelUp = useCallback(() => {
     const expNeeded = avatar.level * 1000;
     if (avatar.experience >= expNeeded) {
       setAvatar(prev => ({
@@ -202,7 +202,7 @@ export const VirtualLife: React.FC<VirtualLifeProps> = ({ isVisible }) => {
       return true;
     }
     return false;
-  };
+  }, [avatar.level, avatar.experience]);
 
   // Check for level up
   useEffect(() => {
